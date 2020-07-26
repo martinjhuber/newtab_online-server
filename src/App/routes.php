@@ -22,6 +22,7 @@ return function (App $app, $container, $basePath = "/") {
     $app->get($basePath.'user', UsersController::class . ':getUser')->add($authMW);   
 
     $app->get($basePath.'grid', GridController::class . ':getGridDefinition')->add($authMW);
+    $app->get($basePath.'grid/version', GridController::class . ':getGridDefinitionVersion')->add($authMW);
 
 }
 

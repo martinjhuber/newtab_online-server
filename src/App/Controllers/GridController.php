@@ -18,10 +18,16 @@ class GridController extends Controller {
     public function getGridDefinition(Request $request, Response $response, $args) {
 
         $user = $request->getAttribute('user');
-
         $gridDefinition = $this->gridDefDataLayer->getGridDefinition($user->id);
-
         return $this->respondJson($response, $gridDefinition->toJson());
+        
+    }
+
+    public function getGridDefinitionVersion(Request $request, Response $response, $args) {
+
+        $user = $request->getAttribute('user');
+        $gdv = $this->gridDefDataLayer->getGridDefinitionVersion($user->id);
+        return $this->respondJson($response, $gdv->toJson());
         
     }
 

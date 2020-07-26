@@ -6,7 +6,8 @@ class GridDefinition {
 
     public $grids;
 
-    public function __construct() {
+    public function __construct($version) {
+        $this->version = $version;
         $this->grids = array();
     }
 
@@ -30,7 +31,7 @@ class GridDefinition {
         foreach($this->grids as $grid) {
             $grids[] = $grid->toJson();
         }
-        return array("grids" => $grids);
+        return array("version" => $this->version, "grids" => $grids);
     }
 
 }
