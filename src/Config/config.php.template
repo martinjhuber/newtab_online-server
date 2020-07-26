@@ -7,8 +7,8 @@ return [
         "type" => "mysql",
         "host" => "localhost",
         "database" => "newtab",
-        "user" => "newtab",
-        "password" => "newtab#pw51"
+        "user" => "DBUSER",
+        "password" => "DBUSER_PASSWORD"
     ],
     "api.basePath" => "/api/v1/",
     "token.header" => "X-NTS-Token"
