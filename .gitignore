@@ -1,3 +1,4 @@
 vendor
 /src/Config/*.php
 build
+/src/public/*.config

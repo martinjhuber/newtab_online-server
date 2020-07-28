@@ -47,7 +47,7 @@ class RoboFile extends \Robo\Tasks {
         $fullDir = self::BUILD_DIR.$dir;
         
         if (file_exists($fullDir)) {
-            $this->_clean($fullDir);
+            $this->_clean($dir);
         }
 
         $this->taskFilesystemStack()
@@ -59,19 +59,30 @@ class RoboFile extends \Robo\Tasks {
 
         $this->taskCopyDir([
                 "App" => $fullDir."/App",
-                "public" => $fullDir."/public",
                 "vendor" => $fullDir."/vendor"
             ])->run();
 
+        $this->taskFilesystemStack()->copy("./public/index.php", $fullDir."/public/index.php")->run();
+
         if ($config == "development" || $config == "production") {
+
             $configFile = "./Config/config-".$config.".php";
             if (file_exists($configFile)) {
                 $this->taskFilesystemStack()->copy($configFile, $fullDir."/Config/config.php")->run();
             } else {
                 $this->say("ERROR: Configuration file ".$configFile." not found. Incomplete build.");
             }
+
+            $webConfigFile = "./public/Web-".$config.".config";
+            if (file_exists($webConfigFile)) {
+                $this->taskFilesystemStack()->copy($webConfigFile, $fullDir."/public/Web.config")->run();
+            } else {
+                $this->say("ERROR: IIS configuration file ".$configFile." not found. Incomplete build.");
+            }
+
         } else {
             $this->taskFilesystemStack()->copy("./Config/config.php.template", $fullDir."/Config/config.php")->run();
+            $this->taskFilesystemStack()->copy("./public/Web.config.template", $fullDir."/public/Web.config")->run();
         }
 
     }

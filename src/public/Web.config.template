@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <system.webServer>
+        <!-- These rewrite rules are mandatory and should not be modified. -->
         <rewrite>
             <rules>
                 <rule name="slim" patternSyntax="Wildcard">
@@ -13,8 +14,10 @@
                 </rule>
             </rules>
         </rewrite>
+        <!-- Add CORS settings if the service is running on a different domain/port as the client. -->
+        <!--
         <cors enabled="true" failUnlistedOrigins="true">
-            <add origin="http://localhost:57008" allowed="true">
+            <add origin="http://localhost:50005" allowed="true">
 			    <allowMethods>
                      <add method="GET" />
                      <add method="POST" />
@@ -24,5 +27,6 @@
 				<allowHeaders allowAllRequestedHeaders="true" />
 			</add>
         </cors>
+        -->
     </system.webServer>
 </configuration>
