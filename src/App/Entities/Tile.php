@@ -22,7 +22,7 @@ class Tile {
         $this->text = $text;
         $this->color = $color;
         $this->imageBase64 = $imageBase64;
-        $this->imageScale = $imageScale;
+        $this->imageScale = $imageScale != null ? (int)$imageScale : null;
     }
 
     public function toJson() {

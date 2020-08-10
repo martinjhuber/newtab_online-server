@@ -57,6 +57,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `tile_delete`(
 )
 BEGIN
 	
+    DECLARE currentGridId INT DEFAULT 0;
+    DECLARE currentOrderId INT DEFAULT 0;
+    
+    -- get current grid and order ids
+	SELECT gridId, orderId
+    INTO currentGridId, currentOrderId
+    FROM grid_definitions gd
+    WHERE gd.fk_user = user_id AND gd.id = tile_id AND `status` = 'Y';
+    
     UPDATE grid_definitions
     SET 
 		updated = current_timestamp(),
@@ -64,6 +73,15 @@ BEGIN
     WHERE fk_user = user_id AND id = tile_id AND `status` = 'Y';
     
 	IF ROW_COUNT() > 0 THEN
+    
+		-- move all elements one order back
+		UPDATE grid_definitions
+        SET
+			updated = current_timestamp(),
+            orderId = orderId - 1
+		WHERE 
+			fk_user = user_id AND gridId = currentGridId AND orderId > currentOrderId AND `status` = 'Y';
+    
 		SET result = 1;
         CALL grid_definition_version_increment(user_id);
 	ELSE
@@ -72,6 +90,7 @@ BEGIN
     
 END$$
 DELIMITER ;
+
 
 /* NEW StoredProc: tile_edit */
 
@@ -148,6 +167,10 @@ BEGIN
     FROM grid_definitions gd
     WHERE gd.fk_user = user_id AND gd.gridId = input_gridId AND `status` = 'Y';
 
+	IF newOrderId IS NULL THEN
+		SET newOrderId = 0;
+	END IF;
+
 	-- get current grid and order ids
 	SELECT gridId, orderId
     INTO currentGridId, currentOrderId
@@ -180,6 +203,7 @@ BEGIN
 
 END$$
 DELIMITER ;
+
 
 
 /* NEW StoredProc: tile_remove_image */
@@ -235,11 +259,11 @@ BEGIN
 	IF input_orderId > currentOrderId THEN
         UPDATE grid_definitions
         SET orderId = orderId - 1
-        WHERE fk_user = user_id AND gridId = currentGridId AND orderId >= currentOrderId AND orderId <= input_orderId AND `status` = 'Y';
+        WHERE fk_user = user_id AND gridId = currentGridId AND orderId > currentOrderId AND orderId <= input_orderId AND `status` = 'Y';
     ELSEIF input_orderId < currentOrderId THEN
         UPDATE grid_definitions
         SET orderId = orderId + 1
-        WHERE fk_user = user_id AND gridId = currentGridId AND orderId <= currentOrderId AND orderId >= input_orderId AND `status` = 'Y';
+        WHERE fk_user = user_id AND gridId = currentGridId AND orderId < currentOrderId AND orderId >= input_orderId AND `status` = 'Y';
     END IF;
 
 	-- set order id of selected tile
@@ -256,4 +280,5 @@ BEGIN
 
 END$$
 DELIMITER ;
+
 

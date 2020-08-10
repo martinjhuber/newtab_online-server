@@ -27,7 +27,7 @@ class GridDefinitionDataLayer {
 
         $gridDefinition = new GridDefinition($this->checkVersion($spResult->out["version"]));
         foreach ($spResult->rows as $row) {
-            $tile = new Tile((int)$row["tileId"], (int)$row["orderId"], (int)$row["width"], (int)$row["height"], $row["href"], $row["text"], $row["color"], $row["imageBase64"], (int)$row["imageScale"]);
+            $tile = new Tile((int)$row["tileId"], (int)$row["orderId"], (int)$row["width"], (int)$row["height"], $row["href"], $row["text"], $row["color"], $row["imageBase64"], $row["imageScale"]);
             $gridDefinition->addTile((int)$row["gridId"], $tile);
         }
         return $gridDefinition;
