@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Middleware\AuthMiddleware;
 use App\Controllers\UsersController;
 use App\Controllers\GridController;
+use App\Controllers\TileController;
 
 return function (App $app, $container, $basePath = "/") {
 
@@ -23,6 +24,13 @@ return function (App $app, $container, $basePath = "/") {
 
     $app->get($basePath.'grid', GridController::class . ':getGridDefinition')->add($authMW);
     $app->get($basePath.'grid/version', GridController::class . ':getGridDefinitionVersion')->add($authMW);
+
+    $app->post($basePath.'grid/tile', TileController::class . ':createTile')->add($authMW);
+    $app->put($basePath.'grid/tile/{id}', TileController::class . ':editTile')->add($authMW);
+    $app->delete($basePath.'grid/tile/{id}', TileController::class . ':deleteTile')->add($authMW);
+    $app->put($basePath.'grid/tile/{id}/gridId', TileController::class . ':moveTileToGrid')->add($authMW);
+    $app->put($basePath.'grid/tile/{id}/order', TileController::class . ':changeTileOrder')->add($authMW);
+    $app->delete($basePath.'grid/tile/{id}/image', TileController::class . ':removeTileImage')->add($authMW);
 
 }
 

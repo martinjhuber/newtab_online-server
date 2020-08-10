@@ -22,10 +22,12 @@ require_once __DIR__.'/Helpers/RequestVerifier.php';
 // Data layers
 require_once __DIR__.'/DataLayer/UsersDataLayer.php';
 require_once __DIR__.'/DataLayer/GridDefinitionDataLayer.php';
+require_once __DIR__.'/DataLayer/TileDataLayer.php';
 
 // Controllers
 require_once __DIR__.'/Controllers/Controller.php';
 require_once __DIR__.'/Controllers/UsersController.php';
 require_once __DIR__.'/Controllers/GridController.php';
+require_once __DIR__.'/Controllers/TileController.php';
 
 ?>

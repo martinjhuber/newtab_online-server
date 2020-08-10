@@ -9,8 +9,12 @@ abstract class Controller {
 
     protected function respondJson(Response $response, $data, $statusCode = 200) {
 
-        $payload = json_encode($data);
-        $response->getBody()->write($payload);
+        if (isset($data)) {
+            $payload = json_encode($data);
+            $response->getBody()->write($payload);
+        } else {
+            $response->getBody()->write("{}");
+        }
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
 
